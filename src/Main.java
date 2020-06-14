@@ -25,17 +25,8 @@ public class Main {
 
             for(int i = 0; i < morse.length(); i++){
                 char c = morse.charAt(i);
-                if(c == '.'){
-                    Sound.shortSound();
-                }
-                else if(c == ' '){
-                    Sound.noSound();
-
-                }
-                else if(c == '-'){
-                    Sound.longSound();
-
-                }
+                Sound.makeSound(c);
+                System.out.print(c);
             }
 
 
