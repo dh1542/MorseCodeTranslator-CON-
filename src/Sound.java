@@ -1,11 +1,8 @@
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.sound.midi.Instrument;
-import javax.sound.midi.MidiChannel;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
+
 import javax.sound.midi.Synthesizer;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 
 public class Sound {
@@ -15,19 +12,56 @@ public class Sound {
     public static void shortSound(){
 
         try{
-            // Create Synthesizer Object
-            Synthesizer sync = MidiSystem.getSynthesizer();
-            sync.open();
 
-            // Array of MidiChannels
-            final MidiChannel[] mc = sync.getChannels();
+            // Got the code from this guy: https://community.oracle.com/thread/1273219?start=0&tstart=0
 
-            // Instruments are used to choose what instrument the sound is played with.
-            Instrument[] instr = sync.getDefaultSoundbank().getInstruments();
+            // Set frequency
+            int frequency = 800;
 
-            sync.loadInstrument(instr[90]);
+            // Set duration
+            int durationMs = 200;
 
-            mc[15].noteOn(540,600);
+            byte[] buf = new byte[ 1 ];;
+            AudioFormat af = new AudioFormat( (float ) frequency, 8, 1, true, false );
+            SourceDataLine sdl = AudioSystem.getSourceDataLine( af );
+            sdl.open();
+            sdl.start();
+            for( int i = 0; i < durationMs * (float )frequency / 1000; i++ ) {
+                double angle = i / ( (float )frequency / 440 ) * 2.0 * Math.PI;
+                buf[ 0 ] = (byte )( Math.sin( angle ) * 100 );
+                sdl.write( buf, 0, 1 );
+            }
+            sdl.drain();
+            sdl.stop();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
+    public static void longSound(){
+
+        try{
+
+            // Got the code from this guy: https://community.oracle.com/thread/1273219?start=0&tstart=0
+
+            // Set frequency
+            int frequency = 800;
+
+            // Set duration
+            int durationMs = 400;
+
+            byte[] buf = new byte[ 1 ];;
+            AudioFormat af = new AudioFormat( (float ) frequency, 8, 1, true, false );
+            SourceDataLine sdl = AudioSystem.getSourceDataLine( af );
+            sdl.open();
+            sdl.start();
+            for( int i = 0; i < durationMs * (float )frequency / 1000; i++ ) {
+                double angle = i / ( (float )frequency / 440 ) * 2.0 * Math.PI;
+                buf[ 0 ] = (byte )( Math.sin( angle ) * 100 );
+                sdl.write( buf, 0, 1 );
+            }
+            sdl.drain();
+            sdl.stop();
 
         }
         catch (Exception e){
@@ -35,16 +69,38 @@ public class Sound {
 
 
         }
+    }
+
+    public static void noSound(){
+
+        try{
+
+            // Got the code from this guy: https://community.oracle.com/thread/1273219?start=0&tstart=0
+
+            // Set frequency
+            int frequency = 0;
+
+            // Set duration
+            int durationMs = 200;
+
+            byte[] buf = new byte[ 1 ];;
+            AudioFormat af = new AudioFormat( (float ) frequency, 8, 1, true, false );
+            SourceDataLine sdl = AudioSystem.getSourceDataLine( af );
+            sdl.open();
+            sdl.start();
+            for( int i = 0; i < durationMs * (float )frequency / 1000; i++ ) {
+                double angle = i / ( (float )frequency / 440 ) * 2.0 * Math.PI;
+                buf[ 0 ] = (byte )( Math.sin( angle ) * 100 );
+                sdl.write( buf, 0, 1 );
+            }
+            sdl.drain();
+            sdl.stop();
+
+        }
+        catch (Exception e){
+            System.out.println(e);
 
 
-
-
-
-
-
-
-
-
-
+        }
     }
 }
