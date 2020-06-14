@@ -23,6 +23,8 @@ public class Main {
             String morse = Morse.translate(plain);
             System.out.println(morse);
 
+            Sound.shortSound();
+
         }
 
 
